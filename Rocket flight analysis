@@ -1,0 +1,46 @@
+#Graphs of Rocket flight, including flight altitude, vertical velocity, and acceleration
+
+#read data as csv file into r studio
+setwd("") #import data from save location
+
+#load csv data into appropriate variables
+altitude <- read.csv("altitude_r.csv")
+velocity <- read.csv("velocity_r.csv")
+acceleration <- read.csv("acceleration_r.csv")
+accel_zoom <- read.csv("accel_zoom_r.csv")
+
+acceleration$scaled <- acceleration$Acceleration-5.00
+accel_zoom$scaled <- accel_zoom$Acceleration - 5.00
+
+
+
+#plot line graphs of rocket flight data (variable vs. time (seconds))
+#installed package to change fonts for graphs/plots (extrafont package)
+library(ggplot2)
+install.packages("extrafont")
+library(extrafont)
+loadfonts(device = "win")
+
+#Create plots with appropriate formatting for altitude, velocity, and acceleration plots of rocket flight.
+alt_gg <- ggplot(data=altitude, aes(x=Time, y=Altitude, group=1)) + geom_line(color="#6600FF", linewidth = 2.5) +
+       ggtitle("Flight Altitude") + xlab("Time (sec)") + ylab("Altitude (m)") + 
+       theme(plot.title=element_text(hjust = 0.5), axis.text.x = element_text(size=20), axis.text.y = element_text(size = 20), text=element_text(size=40, family="TT Times New Roman"))
+
+vel_gg <- ggplot(data=velocity, aes(x=Time, y=Velocity, group=1)) + geom_line(color="#6600FF", linewidth = 2.5) +
+      ggtitle("Vertical Velocity") + xlab("Time (sec)") + ylab("Velocity (m per sec)") + 
+      theme(plot.title=element_text(hjust = 0.5), axis.text.x = element_text(size=20), axis.text.y = element_text(size = 20), text=element_text(size=40, family="TT Times New Roman"))
+        
+accel_gg <- ggplot(data=acceleration, aes(x=Time, y=scaled, group=1)) + geom_line(color="#6600FF", linewidth = 2.5) +
+        ggtitle("Flight Acceleration") + xlab("Time (sec)") + ylab("Acceleration (m per sec^2)") + 
+        theme(plot.title=element_text(hjust = 0.5), axis.text.x = element_text(size=20), axis.text.y = element_text(size = 20), text=element_text(size=40, family="TT Times New Roman"))
+
+
+accel_gg_zoom <- ggplot(data=accel_zoom, aes(x=Time, y=scaled, group=1)) + geom_line(color="#6600FF", linewidth = 2.5) +
+  ggtitle("Flight Acceleration") + xlab("Time (sec)") + ylab("Acceleration (m per sec^2)") + 
+  theme(plot.title=element_text(hjust = 0.5), axis.text.x = element_text(size=20), axis.text.y = element_text(size = 20), text=element_text(size=40, family="TT Times New Roman"))
+               
+#Print plots
+alt_gg
+vel_gg
+accel_gg
+acell_gg_zoom
