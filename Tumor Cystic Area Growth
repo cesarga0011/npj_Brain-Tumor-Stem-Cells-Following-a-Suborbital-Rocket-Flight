@@ -1,0 +1,59 @@
+#analysis of cystic areas between space and ground control mice QNS108 tumors 
+
+#read data as excel file into r studio
+setwd("")
+library('readxl')
+space_hist <- read_excel("")
+
+#check data for normal distribution
+
+shapiro.test(space_hist$Space)#checking for normality for all data
+shapiro.test(space_hist$Ground)
+Space <- space_hist$Space
+Ground <- space_hist$Ground
+hist(Space)  #not normally distributed 
+hist(Ground) #not normally distributed, has a left skew 
+
+
+##The two samples are small and not normally distributed. The correct test would include nonparametric test to compare outcomes between two independent groups. 
+##The test to use is teh Mann Whitney U test (Assumptions: unequal groups, not normally distributed, unequal variances, small sample size, independent measurements)
+##perform Mann Whitney U test between two groups 
+
+wilcox.test(Space, Ground, paired = FALSE)
+wilcox.test(Ground, Space, paired = FALSE)
+
+#Report: W = 63, p-value = 0.0002892, there is a difference between space and ground control mice. 
+
+
+##Visualize data with boxplots 
+## Plot weight by group and color by group
+##reformatted xcel data to fit the ggplot2 functions, couldn't figure out how to reformat it in R studio
+##import reformatted xcel data 
+
+space_hist_boxplot <- read_excel("")
+
+library("ggpubr")
+library("ggplot2")
+library("dplyr")
+
+###WORKING PLOT FOR PUBLICATION
+p <- ggplot(space_hist_boxplot, aes(x = Group, y = Area, fill = Group)) + 
+  geom_boxplot(notch = TRUE) + 
+  #theme(legend.position = "none", plot.title = element_text(hjust = 0.5), text = element_text(size = 20),  panel.background = element_rect(color = "black")) + 
+  labs(title = "Cystic tumor area growth post rocket flight exposure", x = "", y = "Cystic area (mm^2)") +
+  stat_compare_means(label.x = 0.5, label.y = 0.0) + 
+  geom_signif(comparisons = list(c("Ground", "Space")), 
+              map_signif_level = TRUE) + 
+  theme_classic2() + 
+  theme(legend.position = "none", plot.title = element_text(hjust = 0.5), text = element_text(size = 20), 
+        axis.text.x = element_text(colour = "black"), axis.text.y = element_text(colour = "black")) #change x- and y- tick mark labels to black
+p
+
+ggsave("cysticAreaPlot.pdf", dpi = 300)
+
+###summary statistics for boxplot###
+
+Summary <- boxplot(space_hist)$stats
+colnames(Summary) <- c("Space", "Ground")
+rownames(Summary) <- c("Min", "First Quartile", "Median", "Third Quartile", "Maximum")
+print(Summary)
