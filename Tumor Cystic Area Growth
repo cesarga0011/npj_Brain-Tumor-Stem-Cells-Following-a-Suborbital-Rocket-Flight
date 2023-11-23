@@ -3,7 +3,7 @@
 #read data as excel file into r studio
 setwd("")
 library('readxl')
-space_hist <- read_excel("")
+space_hist <- read_excel("Histology cystic area calculations.xlsx")
 
 #check data for normal distribution
 
@@ -12,7 +12,7 @@ shapiro.test(space_hist$Ground)
 Space <- space_hist$Space
 Ground <- space_hist$Ground
 hist(Space)  #not normally distributed 
-hist(Ground) #not normally distributed, has a left skew 
+hist(Ground) #not normally distributed, has a right skew 
 
 
 ##The two samples are small and not normally distributed. The correct test would include nonparametric test to compare outcomes between two independent groups. 
@@ -27,10 +27,10 @@ wilcox.test(Ground, Space, paired = FALSE)
 
 ##Visualize data with boxplots 
 ## Plot weight by group and color by group
-##reformatted xcel data to fit the ggplot2 functions, couldn't figure out how to reformat it in R studio
+##reformatted xcel data to fit the ggplot2 functions
 ##import reformatted xcel data 
 
-space_hist_boxplot <- read_excel("")
+space_hist_boxplot <- read_excel("Histology cystic area calculations reformatted for boxplot in r.xlsx")
 
 library("ggpubr")
 library("ggplot2")
