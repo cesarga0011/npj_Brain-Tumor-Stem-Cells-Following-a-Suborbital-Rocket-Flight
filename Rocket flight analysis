@@ -9,7 +9,7 @@ velocity <- read.csv("velocity_r.csv")
 acceleration <- read.csv("acceleration_r.csv")
 accel_zoom <- read.csv("accel_zoom_r.csv")
 
-acceleration$scaled <- acceleration$Acceleration-5.00
+acceleration$scaled <- acceleration$Acceleration-5.00 #original data from the accelerometer had a starting value of +5 when the rocket was not in motion. Data was scaled by subtracting a unit of 5 from all values to correct the +5 value at rest. 
 accel_zoom$scaled <- accel_zoom$Acceleration - 5.00
 
 
